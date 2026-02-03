@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Wrong Answers Only</title>
+  <title>Wrong Answers Only – HARD MODE</title>
   <style>
     body {
       background: black;
@@ -20,8 +20,13 @@
 <body>
 
 <h1>❌ Wrong Answers Only ❌</h1>
+<h2>🔥 HARD MODE 🔥</h2>
 <h2 id="question"></h2>
-<p>Score: <span id="score">0</span></p>
+
+<p>
+  Score: <span id="score">0</span> |
+  High Score: <span id="highScore">0</span>
+</p>
 
 <div id="answers"></div>
 <br>
@@ -29,39 +34,25 @@
 
 <script>
 let score = 0;
+let highScore = localStorage.getItem("wrongAnswersHighScore") || 0;
+document.getElementById("highScore").innerText = highScore;
 
 const questions = [
-  { q:"What color is the sky?", answers:["Blue","Red","Green","Banana"], wrong:"Banana"},
-  { q:"How many legs does a dog have?", answers:["4","3","2","7"], wrong:"7"},
-  { q:"What do cows drink?", answers:["Water","Milk","Juice","Lava"], wrong:"Lava"},
-  { q:"Are you?", answers:["Human","Kid","Parent","IRON WATERMELON"], wrong:"IRON WATERMELON"},
-
-  { q:"What planet do we live on?", answers:["Earth","Mars","Venus","Pizza"], wrong:"Pizza"},
-  { q:"What do you use to write?", answers:["Pencil","Pen","Marker","Potato"], wrong:"Potato"},
-  { q:"How many days in a week?", answers:["7","5","6","42"], wrong:"42"},
-  { q:"What animal says moo?", answers:["Cow","Bull","Calf","Car"], wrong:"Car"},
-  { q:"What do fish breathe?", answers:["Oxygen","Air","Water","WiFi"], wrong:"WiFi"},
-  { q:"What do you wear on your feet?", answers:["Shoes","Socks","Boots","Sandwiches"], wrong:"Sandwiches"},
-  { q:"What is 2 + 2?", answers:["4","3","5","Fish"], wrong:"Fish"},
-  { q:"What do birds have?", answers:["Wings","Beaks","Feathers","Homework"], wrong:"Homework"},
-  { q:"What is ice made of?", answers:["Water","Frozen water","H2O","Hot sauce"], wrong:"Hot sauce"},
-  { q:"What do you sleep on?", answers:["Bed","Couch","Mattress","Ceiling"], wrong:"Ceiling"},
-  { q:"What comes after Monday?", answers:["Tuesday","Wednesday","Thursday","Purple"], wrong:"Purple"},
-  { q:"What do you brush your teeth with?", answers:["Toothbrush","Paste","Water","Remote"], wrong:"Remote"},
-  { q:"What shape is a ball?", answers:["Round","Circle","Sphere","Triangle cube"], wrong:"Triangle cube"},
-  { q:"What do you eat soup with?", answers:["Spoon","Fork","Cup","Laptop"], wrong:"Laptop"},
-  { q:"What do cars need to move?", answers:["Gas","Electricity","Fuel","Bananas"], wrong:"Bananas"},
-  { q:"What do you hear with?", answers:["Ears","Head","Brain","Elbows"], wrong:"Elbows"},
-  { q:"What do you see with?", answers:["Eyes","Glasses","Contacts","Toes"], wrong:"Toes"},
-  { q:"What do you clap?", answers:["Hands","Palms","Fingers","Eyebrows"], wrong:"Eyebrows"},
-  { q:"What do you drink when thirsty?", answers:["Water","Juice","Milk","Keyboard"], wrong:"Keyboard"},
-  { q:"What does the sun give us?", answers:["Light","Heat","Energy","Homework"], wrong:"Homework"},
-  { q:"What do you use to open a door?", answers:["Handle","Knob","Key","Cheese"], wrong:"Cheese"},
-  { q:"What do bees make?", answers:["Honey","Wax","Buzz","Spaghetti"], wrong:"Spaghetti"},
-  { q:"What do you wear on your head?", answers:["Hat","Helmet","Cap","Microwave"], wrong:"Microwave"},
-  { q:"What does a clock show?", answers:["Time","Hours","Minutes","Pizza level"], wrong:"Pizza level"},
-  { q:"What do you sit on?", answers:["Chair","Couch","Bench","Air"], wrong:"Air"},
-  { q:"What do you use to call someone?", answers:["Phone","Cell","Mobile","Brick"], wrong:"Brick"}
+  { q:"What color is the sky?", answers:["Blue","Red","Banana","Sock"], wrong:["Banana","Sock"]},
+  { q:"How many legs does a dog have?", answers:["4","3","7","Potato"], wrong:["7","Potato"]},
+  { q:"What do cows drink?", answers:["Water","Milk","Lava","Keyboard"], wrong:["Lava","Keyboard"]},
+  { q:"Are you?", answers:["Human","Kid","IRON WATERMELON","Rock"], wrong:["IRON WATERMELON","Rock"]},
+  { q:"What planet do we live on?", answers:["Earth","Mars","Pizza","Chair"], wrong:["Pizza","Chair"]},
+  { q:"What do you use to write?", answers:["Pencil","Pen","Potato","Fish"], wrong:["Potato","Fish"]},
+  { q:"How many days in a week?", answers:["7","5","42","Banana"], wrong:["42","Banana"]},
+  { q:"What animal says moo?", answers:["Cow","Bull","Car","Phone"], wrong:["Car","Phone"]},
+  { q:"What do fish breathe?", answers:["Oxygen","Water","WiFi","Smoke"], wrong:["WiFi","Smoke"]},
+  { q:"What do you wear on your feet?", answers:["Shoes","Socks","Sandwich","TV"], wrong:["Sandwich","TV"]},
+  { q:"What is 2 + 2?", answers:["4","3","Fish","Rock"], wrong:["Fish","Rock"]},
+  { q:"What do birds have?", answers:["Wings","Feathers","Homework","Controllers"], wrong:["Homework","Controllers"]},
+  { q:"What is ice made of?", answers:["Water","H2O","Hot sauce","Fire"], wrong:["Hot sauce","Fire"]},
+  { q:"What do you sleep on?", answers:["Bed","Couch","Ceiling","Mailbox"], wrong:["Ceiling","Mailbox"]},
+  { q:"What comes after Monday?", answers:["Tuesday","Wednesday","Purple","Cheese"], wrong:["Purple","Cheese"]}
 ];
 
 function startGame() {
@@ -81,9 +72,16 @@ function nextQuestion() {
     const btn = document.createElement("button");
     btn.innerText = a;
     btn.onclick = () => {
-      if (a === q.wrong) {
+      if (q.wrong.includes(a)) {
         score++;
         document.getElementById("score").innerText = score;
+
+        if (score > highScore) {
+          highScore = score;
+          localStorage.setItem("wrongAnswersHighScore", highScore);
+          document.getElementById("highScore").innerText = highScore;
+        }
+
         nextQuestion();
       } else {
         alert("❌ That answer was CORRECT! Game Over!");
