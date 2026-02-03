@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Wrong Answers Only</title>
+  <style>
+    body {
+      background: black;
+      color: white;
+      font-family: Arial;
+      text-align: center;
+    }
+    button {
+      font-size: 18px;
+      margin: 10px;
+      padding: 10px 20px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<h1>❌ Wrong Answers Only ❌</h1>
+<h2 id="question"></h2>
+<p>Score: <span id="score">0</span></p>
+
+<div id="answers"></div>
+<br>
+<button onclick="startGame()">Restart</button>
+
+<script>
+let score = 0;
+
+const questions = [
+  { q:"What color is the sky?", answers:["Blue","Red","Green","Banana"], wrong:"Banana"},
+  { q:"How many legs does a dog have?", answers:["4","3","2","7"], wrong:"7"},
+  { q:"What do cows drink?", answers:["Water","Milk","Juice","Lava"], wrong:"Lava"},
+  { q:"Are you?", answers:["Human","Kid","Parent","IRON WATERMELON"], wrong:"IRON WATERMELON"},
+
+  { q:"What planet do we live on?", answers:["Earth","Mars","Venus","Pizza"], wrong:"Pizza"},
+  { q:"What do you use to write?", answers:["Pencil","Pen","Marker","Potato"], wrong:"Potato"},
+  { q:"How many days in a week?", answers:["7","5","6","42"], wrong:"42"},
+  { q:"What animal says moo?", answers:["Cow","Bull","Calf","Car"], wrong:"Car"},
+  { q:"What do fish breathe?", answers:["Oxygen","Air","Water","WiFi"], wrong:"WiFi"},
+  { q:"What do you wear on your feet?", answers:["Shoes","Socks","Boots","Sandwiches"], wrong:"Sandwiches"},
+  { q:"What is 2 + 2?", answers:["4","3","5","Fish"], wrong:"Fish"},
+  { q:"What do birds have?", answers:["Wings","Beaks","Feathers","Homework"], wrong:"Homework"},
+  { q:"What is ice made of?", answers:["Water","Frozen water","H2O","Hot sauce"], wrong:"Hot sauce"},
+  { q:"What do you sleep on?", answers:["Bed","Couch","Mattress","Ceiling"], wrong:"Ceiling"},
+  { q:"What comes after Monday?", answers:["Tuesday","Wednesday","Thursday","Purple"], wrong:"Purple"},
+  { q:"What do you brush your teeth with?", answers:["Toothbrush","Paste","Water","Remote"], wrong:"Remote"},
+  { q:"What shape is a ball?", answers:["Round","Circle","Sphere","Triangle cube"], wrong:"Triangle cube"},
+  { q:"What do you eat soup with?", answers:["Spoon","Fork","Cup","Laptop"], wrong:"Laptop"},
+  { q:"What do cars need to move?", answers:["Gas","Electricity","Fuel","Bananas"], wrong:"Bananas"},
+  { q:"What do you hear with?", answers:["Ears","Head","Brain","Elbows"], wrong:"Elbows"},
+  { q:"What do you see with?", answers:["Eyes","Glasses","Contacts","Toes"], wrong:"Toes"},
+  { q:"What do you clap?", answers:["Hands","Palms","Fingers","Eyebrows"], wrong:"Eyebrows"},
+  { q:"What do you drink when thirsty?", answers:["Water","Juice","Milk","Keyboard"], wrong:"Keyboard"},
+  { q:"What does the sun give us?", answers:["Light","Heat","Energy","Homework"], wrong:"Homework"},
+  { q:"What do you use to open a door?", answers:["Handle","Knob","Key","Cheese"], wrong:"Cheese"},
+  { q:"What do bees make?", answers:["Honey","Wax","Buzz","Spaghetti"], wrong:"Spaghetti"},
+  { q:"What do you wear on your head?", answers:["Hat","Helmet","Cap","Microwave"], wrong:"Microwave"},
+  { q:"What does a clock show?", answers:["Time","Hours","Minutes","Pizza level"], wrong:"Pizza level"},
+  { q:"What do you sit on?", answers:["Chair","Couch","Bench","Air"], wrong:"Air"},
+  { q:"What do you use to call someone?", answers:["Phone","Cell","Mobile","Brick"], wrong:"Brick"}
+];
+
+function startGame() {
+  score = 0;
+  document.getElementById("score").innerText = score;
+  nextQuestion();
+}
+
+function nextQuestion() {
+  const q = questions[Math.floor(Math.random() * questions.length)];
+  document.getElementById("question").innerText = q.q;
+
+  const answersDiv = document.getElementById("answers");
+  answersDiv.innerHTML = "";
+
+  q.answers.forEach(a => {
+    const btn = document.createElement("button");
+    btn.innerText = a;
+    btn.onclick = () => {
+      if (a === q.wrong) {
+        score++;
+        document.getElementById("score").innerText = score;
+        nextQuestion();
+      } else {
+        alert("❌ That answer was CORRECT! Game Over!");
+        startGame();
+      }
+    };
+    answersDiv.appendChild(btn);
+  });
+}
+
+startGame();
+</script>
+
+</body>
+</html>
